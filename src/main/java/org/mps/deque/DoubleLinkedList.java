@@ -19,41 +19,40 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
     @Override
     public void prepend(T value) {
         // TODO
-        LinkedNode<T> newNode = new LinkedNode<T>(value, null, first);
-        if (first != null){
-            first.setPrevious(newNode);
-            if(last == null){
-                last = first;
-            }
+
+        if(size() == 0){
+            LinkedNode<T> newNode = new LinkedNode<T>(value, null, null);
+            last = newNode;
+            first = newNode;
         }
         else{
-            last = newNode;
+            LinkedNode<T> newNode = new LinkedNode<T>(value, null, first);
+            first.setPrevious(newNode);
+            first = newNode;
         }
-        first = newNode;
         ++size;
     }
 
     @Override
     public void append(T value) {
         // TODO
-        LinkedNode<T> newNode = new LinkedNode<T>(value, last, null);
-        if (last != null){
-            last.setNext(newNode);
-            if(first == null){
-                first = last;
-            }
-        }
-        else{
+        if(size() == 0){
+            LinkedNode<T> newNode = new LinkedNode<T>(value, null, null);
+            last = newNode;
             first = newNode;
         }
-        last = newNode;
+        else{
+            LinkedNode<T> newNode = new LinkedNode<T>(value, last, null);
+            last.setNext(newNode);
+            last = newNode;
+        }
         ++size;
     }
 
     @Override
     public void deleteFirst() {
         // TODO
-        if (first == null){
+        if (size() == 0){
             throw new DoubleLinkedQueueException("The deque is empty");
         }
         if (first.getNext() == null){
@@ -70,7 +69,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
     @Override
     public void deleteLast() {
         // TODO
-        if (last == null){
+        if (size() == 0){
             throw new DoubleLinkedQueueException("The deque is empty");
         }
         if (last.getPrevious() == null){
@@ -87,13 +86,13 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
     @Override
     public T first() {
         // TODO
-        return first.getItem();
+        return first != null ? first.getItem() : null;
     }
 
     @Override
     public T last() {
         // TODO
-        return last.getItem();
+        return last != null ? last.getItem() : null;
     }
 
     @Override
