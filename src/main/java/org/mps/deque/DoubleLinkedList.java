@@ -30,6 +30,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
             last = newNode;
         }
         first = newNode;
+        ++size;
     }
 
     @Override
@@ -46,6 +47,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
             first = newNode;
         }
         last = newNode;
+        ++size;
     }
 
     @Override
@@ -62,6 +64,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
             first = first.getNext();
             first.setPrevious(null);
         }
+        --size;
     }
 
     @Override
@@ -78,6 +81,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
             last = last.getPrevious();
             last.setNext(null);
         }
+        --size;
     }
 
     @Override
@@ -95,12 +99,6 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
     @Override
     public int size() {
         // TODO
-        LinkedNode<T> current = first;
-        int count = 0;
-        while (current != null){
-            count++;
-            current = current.getNext();
-        }
-        return count;
+        return size;
     }
 }
