@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("A DoubleLinkedList")
@@ -16,7 +18,7 @@ public class DoubleLinkedListTest {
         DoubleLinkedList<Object> doubleLinkedList;
 
         @BeforeEach
-        void createNewDoubleLinkedList() {
+        void isInstantiatedAndNew() {
             doubleLinkedList = new DoubleLinkedList<>();
         }
         @Test
@@ -28,7 +30,7 @@ public class DoubleLinkedListTest {
         }
         @Test
         @DisplayName("prepend")
-        void prepend() {
+        void prependingElement() {
             doubleLinkedList.prepend(1);
             assertEquals(1, doubleLinkedList.size());
             assertEquals(1, doubleLinkedList.first());
@@ -36,7 +38,7 @@ public class DoubleLinkedListTest {
         }
         @Test
         @DisplayName("append")
-        void append() {
+        void appendAnElement() {
             doubleLinkedList.append(2);
             assertEquals(1, doubleLinkedList.size());
             assertEquals(2, doubleLinkedList.first());
@@ -44,15 +46,33 @@ public class DoubleLinkedListTest {
         }
 
         @Test
-        @DisplayName("deleteFirst throws exception")
-        void deleteFirst() {
+        @DisplayName("throws DoubleLinkedQueueException when deleting first")
+        void throwsExceptionWhenDeletingFirst() {
             assertThrows(Exception.class, () -> doubleLinkedList.deleteFirst());
         }
 
         @Test
-        @DisplayName("deleteLast throws exception")
-        void deleteLast() {
+        @DisplayName("throws DoubleLinkedQueueException when deleting last")
+        void throwsExceptionWhenDeletingLast() {
             assertThrows(Exception.class, () -> doubleLinkedList.deleteLast());
+        }
+
+        @Test
+        @DisplayName("throws DoubleLinkedQueueException when getting an element")
+        void throwsExceptionWhenGetting() {
+            assertThrows(Exception.class, () -> doubleLinkedList.get(0));
+        }
+
+        @Test
+        @DisplayName("throws DoubleLinkedQueueException when removing an element")
+        void throwsExceptionWhenRemoving() {
+            assertThrows(Exception.class, () -> doubleLinkedList.remove(0));
+        }
+
+        @Test
+        @DisplayName("throws DoubleLinkedQueueException when sorting")
+        void throwsExceptionWhenSorting() {
+            assertThrows(Exception.class, () -> doubleLinkedList.sort(Comparator.comparingInt(o -> (int) o)));
         }
     }
 
@@ -63,7 +83,7 @@ public class DoubleLinkedListTest {
         DoubleLinkedList<Object> doubleLinkedList;
 
         @BeforeEach
-        void prependElement() {
+        void isInstantiatedAndPrepended() {
             doubleLinkedList = new DoubleLinkedList<>();
             doubleLinkedList.prepend(1);
             // doubleLinkedList.append(1); sería equivalente
@@ -79,7 +99,7 @@ public class DoubleLinkedListTest {
 
         @Test
         @DisplayName("prepend another element")
-        void prepend() {
+        void prependingAnElement() {
             doubleLinkedList.prepend(2);
             assertEquals(2, doubleLinkedList.size());
             assertEquals(2, doubleLinkedList.first());
@@ -88,7 +108,7 @@ public class DoubleLinkedListTest {
 
         @Test
         @DisplayName("append another element")
-        void append() {
+        void appendingAnElement() {
             doubleLinkedList.append(3);
             assertEquals(2, doubleLinkedList.size());
             assertEquals(1, doubleLinkedList.first());
@@ -96,8 +116,8 @@ public class DoubleLinkedListTest {
         }
 
         @Test
-        @DisplayName("deleteFirst deletes element")
-        void deleteFirst() {
+        @DisplayName("deleteFirst deletes element and is empty")
+        void deletingFirstElement() {
             doubleLinkedList.deleteFirst();
             assertEquals(0, doubleLinkedList.size());
             assertNull(doubleLinkedList.first());
@@ -105,9 +125,24 @@ public class DoubleLinkedListTest {
         }
 
         @Test
-        @DisplayName("deleteLast deletes element")
-        void deleteLast() {
+        @DisplayName("deleteLast deletes element and is empty")
+        void deletingLastElement() {
             doubleLinkedList.deleteLast();
+            assertEquals(0, doubleLinkedList.size());
+            assertNull(doubleLinkedList.first());
+            assertNull(doubleLinkedList.last());
+        }
+
+        @Test
+        @DisplayName("getting an element")
+        void get() {
+            assertEquals(1, doubleLinkedList.get(0));
+        }
+
+        @Test
+        @DisplayName("deleting an element makes the list empty")
+        void remove() {
+            doubleLinkedList.remove(1);
             assertEquals(0, doubleLinkedList.size());
             assertNull(doubleLinkedList.first());
             assertNull(doubleLinkedList.last());
@@ -121,7 +156,7 @@ public class DoubleLinkedListTest {
         DoubleLinkedList<Object> doubleLinkedList;
 
         @BeforeEach
-        void prependTwoElements() {
+        void IsInstantiatedAndTwoElementsPrepended() {
             doubleLinkedList = new DoubleLinkedList<>();
             doubleLinkedList.prepend(2);
             doubleLinkedList.prepend(1);
@@ -171,6 +206,22 @@ public class DoubleLinkedListTest {
             assertEquals(1, doubleLinkedList.first());
             assertEquals(1, doubleLinkedList.last());
         }
+
+        @Test
+        @DisplayName("get element")
+        void get() {
+            assertEquals(1, doubleLinkedList.get(0));
+            assertEquals(2, doubleLinkedList.get(1));
+        }
+
+        @Test
+        @DisplayName("delete element")
+        void remove() {
+            doubleLinkedList.remove(1);
+            assertEquals(1, doubleLinkedList.size());
+            assertEquals(2, doubleLinkedList.first());
+            assertEquals(2, doubleLinkedList.last());
+        }
     }
 
     // No hace falta hacer un nested para el caso donde se añade un elemento al final,
@@ -185,6 +236,46 @@ public class DoubleLinkedListTest {
         assertEquals(1, doubleLinkedList.size());
         assertEquals(1, doubleLinkedList.first());
         assertEquals(1, doubleLinkedList.last());
+    }
+
+    @Test
+    @DisplayName("Sorting a list with more than two elements")
+    void sort() {
+        DoubleLinkedList<Object> doubleLinkedList = new DoubleLinkedList<>();
+        doubleLinkedList.append(3);
+        doubleLinkedList.append(1);
+        doubleLinkedList.append(2);
+        doubleLinkedList.sort(Comparator.comparingInt(o -> (int) o));
+        assertEquals(1, doubleLinkedList.get(0));
+        assertEquals(2, doubleLinkedList.get(1));
+        assertEquals(3, doubleLinkedList.get(2));
+    }
+
+    @Test
+    @DisplayName("Getting an element out of bounds throws an exception")
+    void getOutOfBounds() {
+        DoubleLinkedList<Object> doubleLinkedList = new DoubleLinkedList<>();
+        assertThrows(Exception.class, () -> doubleLinkedList.get(0));
+    }
+
+    @Test
+    @DisplayName("Contains returns true if the element is in the list")
+    void contains() {
+        DoubleLinkedList<Object> doubleLinkedList = new DoubleLinkedList<>();
+        doubleLinkedList.append(1);
+        doubleLinkedList.append(2);
+        doubleLinkedList.append(3);
+        assertTrue(doubleLinkedList.contains(2));
+    }
+
+    @Test
+    @DisplayName("Contains returns false if the element is not in the list")
+    void notContains() {
+        DoubleLinkedList<Object> doubleLinkedList = new DoubleLinkedList<>();
+        doubleLinkedList.append(1);
+        doubleLinkedList.append(2);
+        doubleLinkedList.append(3);
+        assertFalse(doubleLinkedList.contains(4));
     }
 
 }
